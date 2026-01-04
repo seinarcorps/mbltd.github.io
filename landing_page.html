@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Martin Brothers LTD | Engineering & Product Design</title>
+    <meta name="description" content="Professional mechanical engineering services including product modeling, technical drawings, and production sourcing.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Roboto+Slab:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Courier Prime"', 'monospace'], // Body text
+                        heading: ['"Roboto Slab"', 'serif'],     // Headers
+                    },
+                    colors: {
+                        comp: {
+                            paper: '#E0EED0',    // Standard green engineering paper background
+                            grid: '#B8D8BE',     // The lighter green grid lines
+                            ink: '#1A2E1A',      // Deep forest green (like dark ink)
+                            inkLight: '#2C4A2C', // Slightly lighter ink for body text
+                            accent: '#B34D10',   // Burnt orange/brown (like a leather folder or pencil lead)
+                            white: '#F0F7E6',    // Slightly off-white for "paper" areas
+                        }
+                    },
+                    backgroundImage: {
+                        // Subtle noise for paper texture
+                        'grain': "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E\")",
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E0EED0;
+            border-left: 1px solid #1A2E1A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1A2E1A;
+            border: 2px solid #E0EED0;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B34D10;
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        /* Corner Flourishes */
+        .corner-accent {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: #1A2E1A;
+            transition: all 0.3s ease;
+        }
+        .corner-tl { top: -1px; left: -1px; border-top-width: 3px; border-left-width: 3px; }
+        .corner-tr { top: -1px; right: -1px; border-top-width: 3px; border-right-width: 3px; }
+        .corner-bl { bottom: -1px; left: -1px; border-bottom-width: 3px; border-left-width: 3px; }
+        .corner-br { bottom: -1px; right: -1px; border-bottom-width: 3px; border-right-width: 3px; }
+
+        .group:hover .corner-accent {
+            border-color: #B34D10;
+        }
+
+        /* Technical Grid Background - Engineering Paper Style */
+        .tech-grid {
+            background-size: 30px 30px; /* Standard grid size */
+            background-image:
+                linear-gradient(to right, #B8D8BE 1px, transparent 1px),
+                linear-gradient(to bottom, #B8D8BE 1px, transparent 1px);
+        }
+        
+        /* Major Grid Lines (every 5th line usually, simplified here for web) */
+        .tech-grid-major {
+            background-size: 150px 150px;
+            background-image:
+                linear-gradient(to right, rgba(26, 46, 26, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(26, 46, 26, 0.1) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="font-sans text-comp-ink bg-comp-paper bg-grain selection:bg-comp-ink selection:text-comp-paper min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-comp-paper/95 backdrop-blur-sm border-b-2 border-comp-ink transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative flex items-center justify-between h-32">
+                
+                <!-- Logo (Centered absolutely) -->
+                <div class="absolute left-1/2 transform -translate-x-1/2">
+                    <!-- Added sepia and hue-rotate to blend logo with green theme better -->
+                    <img src="MB Logo.PNG" alt="Martin Brothers LTD" class="h-28 w-auto object-contain filter contrast-125 sepia-[.3] hue-rotate-15">
+                </div>
+
+                <!-- Desktop Menu (Right aligned) -->
+                <div class="hidden md:flex space-x-12 items-center ml-auto">
+                    <a href="#services" class="text-sm font-bold text-comp-inkLight hover:text-comp-accent transition-colors uppercase tracking-widest font-heading border-b-2 border-transparent hover:border-comp-accent pb-1">Services</a>
+                    <a href="#contact" class="px-6 py-2 bg-comp-ink text-comp-paper text-sm font-bold uppercase tracking-widest hover:bg-comp-accent transition-colors border-2 border-transparent hover:border-comp-ink shadow-[4px_4px_0px_0px_rgba(26,46,26,0.3)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
+                        Contact Us
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button (Right aligned) -->
+                <div class="md:hidden flex items-center ml-auto">
+                    <button id="mobile-menu-btn" class="text-comp-ink focus:outline-none border-2 border-comp-ink p-1 hover:bg-comp-ink hover:text-comp-paper transition-colors">
+                        <i data-lucide="menu" class="w-8 h-8"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-comp-paper border-b-2 border-comp-ink absolute w-full">
+            <div class="px-4 pt-4 pb-6 space-y-4 font-heading">
+                <a href="#services" class="block text-base font-bold text-comp-ink uppercase tracking-wider" onclick="toggleMenu()">Services</a>
+                <a href="#contact" class="block text-base font-bold text-comp-accent uppercase tracking-wider" onclick="toggleMenu()">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-48 pb-20 lg:pt-56 lg:pb-24 overflow-hidden tech-grid">
+        <!-- Major Grid Overlay -->
+        <div class="absolute inset-0 tech-grid-major pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Widened container from max-w-4xl to max-w-5xl -->
+            <div class="max-w-5xl mx-auto text-center border-y-4 border-double border-comp-ink py-12 bg-comp-paper/90 backdrop-blur-sm shadow-xl">
+                <h1 class="text-4xl md:text-6xl font-black tracking-tight text-comp-ink mb-6 leading-tight font-heading uppercase fade-in-up">
+                    Engineering concepts <br>
+                    <span class="text-comp-inkLight/70">into reality.</span>
+                </h1>
+                
+                <div class="flex items-center justify-center my-6 opacity-60">
+                     <div class="h-[1px] w-12 bg-comp-ink"></div>
+                     <div class="w-3 h-3 rotate-45 border border-comp-ink bg-comp-ink mx-2"></div>
+                     <div class="h-[1px] w-12 bg-comp-ink"></div>
+                </div>
+
+                <!-- Widened text container from max-w-2xl to max-w-3xl -->
+                <p class="text-lg md:text-xl text-comp-inkLight font-medium leading-relaxed max-w-3xl mx-auto fade-in-up delay-100 font-sans">
+                    Bridging the gap between ideas and manufactured products.<br>Mechanical engineering services for all levels of product development.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="w-full flex items-center justify-center py-4 bg-comp-paper">
+        <div class="w-full max-w-7xl px-4 flex items-center">
+            <div class="h-[2px] w-full bg-comp-ink"></div>
+            <div class="mx-4 flex space-x-2">
+                 <div class="w-2 h-2 rotate-45 bg-comp-ink"></div>
+                 <div class="w-2 h-2 rotate-45 bg-comp-accent"></div>
+                 <div class="w-2 h-2 rotate-45 bg-comp-ink"></div>
+            </div>
+            <div class="h-[2px] w-full bg-comp-ink"></div>
+        </div>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 bg-comp-paper relative tech-grid">
+        <div class="absolute inset-0 tech-grid-major pointer-events-none opacity-50"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+                
+                <!-- Service 1 -->
+                <div class="group relative p-8 bg-comp-white border-2 border-comp-ink hover:shadow-[8px_8px_0px_0px_rgba(26,46,26,1)] transition-shadow duration-300">
+                    <!-- Corners -->
+                    <div class="corner-accent corner-tl"></div>
+                    <div class="corner-accent corner-tr"></div>
+                    <div class="corner-accent corner-bl"></div>
+                    <div class="corner-accent corner-br"></div>
+
+                    <div class="text-center">
+                        <h3 class="text-xl font-black text-comp-ink mb-6 font-heading uppercase tracking-wide border-b-2 border-comp-ink pb-2 inline-block">Product Design & Modeling</h3>
+                    </div>
+                    <p class="text-comp-inkLight leading-relaxed mb-6 font-medium">
+                        Expert solid modeling using industry-standard CAD tools. Take your concepts from napkin sketches to fully realized 3D assemblies, ensuring fit, function, and manufacturability.
+                    </p>
+                    <ul class="space-y-3 text-sm text-comp-ink font-bold">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>SolidWorks Experts</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>Design Iteration & Validation</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>Complex Assemblies</li>
+                    </ul>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="group relative p-8 bg-comp-white border-2 border-comp-ink hover:shadow-[8px_8px_0px_0px_rgba(26,46,26,1)] transition-shadow duration-300">
+                    <!-- Corners -->
+                    <div class="corner-accent corner-tl"></div>
+                    <div class="corner-accent corner-tr"></div>
+                    <div class="corner-accent corner-bl"></div>
+                    <div class="corner-accent corner-br"></div>
+
+                    <div class="text-center">
+                        <h3 class="text-xl font-black text-comp-ink mb-6 font-heading uppercase tracking-wide border-b-2 border-comp-ink pb-2 inline-block">Technical Drawing Packages</h3>
+                    </div>
+                    <p class="text-comp-inkLight leading-relaxed mb-6 font-medium">
+                        Comprehensive documentation tailored to the recipients, from machinists to marketers. Create detailed technical data packages that ensure clarity, functionality, and repeatability in production.
+                    </p>
+                    <ul class="space-y-3 text-sm text-comp-ink font-bold">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>GD&T per ASME Y14.5</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>BoM Management</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>Procedures & Instructions</li>
+                    </ul>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group relative p-8 bg-comp-white border-2 border-comp-ink hover:shadow-[8px_8px_0px_0px_rgba(26,46,26,1)] transition-shadow duration-300">
+                    <!-- Corners -->
+                    <div class="corner-accent corner-tl"></div>
+                    <div class="corner-accent corner-tr"></div>
+                    <div class="corner-accent corner-bl"></div>
+                    <div class="corner-accent corner-br"></div>
+
+                    <div class="text-center">
+                        <h3 class="text-xl font-black text-comp-ink mb-6 font-heading uppercase tracking-wide border-b-2 border-comp-ink pb-2 inline-block">Production Sourcing</h3>
+                    </div>
+                    <p class="text-comp-inkLight leading-relaxed mb-6 font-medium">
+                        Leverage a deep network of manufacturing partners to get your parts made. From prototype to production, source parts according to schedule, cost, location, or wherever else your priorities lie.
+                    </p>
+                    <ul class="space-y-3 text-sm text-comp-ink font-bold">
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>Rapid Prototyping</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>Vendor Coordination</li>
+                        <li class="flex items-center"><span class="w-2 h-2 bg-comp-accent mr-3 rotate-45"></span>Quality Assurance</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="w-full flex items-center justify-center py-4 bg-comp-paper">
+        <div class="w-full max-w-7xl px-4 flex items-center">
+            <div class="h-[2px] w-full bg-comp-ink"></div>
+            <div class="mx-4 flex space-x-2">
+                 <div class="w-2 h-2 rotate-45 bg-comp-ink"></div>
+                 <div class="w-2 h-2 rotate-45 bg-comp-accent"></div>
+                 <div class="w-2 h-2 rotate-45 bg-comp-ink"></div>
+            </div>
+            <div class="h-[2px] w-full bg-comp-ink"></div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-comp-paper tech-grid relative">
+        <div class="absolute inset-0 tech-grid-major pointer-events-none opacity-50"></div>
+
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black text-comp-ink mb-4 font-heading uppercase tracking-wider">Get in Touch</h2>
+                <div class="w-24 h-1 bg-comp-accent mx-auto mb-6"></div>
+                <p class="text-xl text-comp-inkLight font-medium">
+                    Ready to discuss your project? Reach out for a consultation on design, documentation, or sourcing needs.
+                </p>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="bg-comp-white p-8 md:p-12 border-4 border-double border-comp-ink relative shadow-2xl">
+                <!-- Large decorative screws/rivets -->
+                <div class="absolute top-4 left-4 w-3 h-3 rounded-full border border-comp-ink flex items-center justify-center"><div class="w-full h-[1px] bg-comp-ink rotate-45"></div></div>
+                <div class="absolute top-4 right-4 w-3 h-3 rounded-full border border-comp-ink flex items-center justify-center"><div class="w-full h-[1px] bg-comp-ink rotate-45"></div></div>
+                <div class="absolute bottom-4 left-4 w-3 h-3 rounded-full border border-comp-ink flex items-center justify-center"><div class="w-full h-[1px] bg-comp-ink rotate-45"></div></div>
+                <div class="absolute bottom-4 right-4 w-3 h-3 rounded-full border border-comp-ink flex items-center justify-center"><div class="w-full h-[1px] bg-comp-ink rotate-45"></div></div>
+
+                <!-- Replace YOUR_FORM_ID with your actual Formspree form ID -->
+                <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="space-y-8 relative z-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <label for="firstName" class="block text-xs font-bold text-comp-ink uppercase tracking-widest mb-2">First Name</label>
+                            <input type="text" id="firstName" name="firstName" required class="w-full px-4 py-3 bg-comp-paper border-2 border-comp-ink focus:border-comp-accent focus:ring-0 outline-none transition-colors font-sans placeholder-comp-ink/40" placeholder="JANE">
+                        </div>
+                        <div>
+                            <label for="lastName" class="block text-xs font-bold text-comp-ink uppercase tracking-widest mb-2">Last Name</label>
+                            <input type="text" id="lastName" name="lastName" required class="w-full px-4 py-3 bg-comp-paper border-2 border-comp-ink focus:border-comp-accent focus:ring-0 outline-none transition-colors font-sans placeholder-comp-ink/40" placeholder="DOE">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="email" class="block text-xs font-bold text-comp-ink uppercase tracking-widest mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" required class="w-full px-4 py-3 bg-comp-paper border-2 border-comp-ink focus:border-comp-accent focus:ring-0 outline-none transition-colors font-sans placeholder-comp-ink/40" placeholder="JANE@COMPANY.COM">
+                    </div>
+
+                    <div>
+                        <label for="message" class="block text-xs font-bold text-comp-ink uppercase tracking-widest mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" required class="w-full px-4 py-3 bg-comp-paper border-2 border-comp-ink focus:border-comp-accent focus:ring-0 outline-none transition-colors resize-none font-sans placeholder-comp-ink/40" placeholder="PROJECT DETAILS..."></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-comp-accent text-comp-white font-bold uppercase tracking-widest hover:bg-comp-ink transition-all flex justify-center items-center group border-2 border-comp-ink shadow-[4px_4px_0px_0px_rgba(26,46,26,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]">
+                        Send Message
+                        <i data-lucide="send" class="ml-3 w-5 h-5"></i>
+                    </button>
+                    
+                    <!-- Simple Success/Error Messages -->
+                    <div id="successMessage" class="hidden mt-6 p-4 bg-comp-paper border-2 border-comp-ink text-comp-ink text-sm font-bold text-center">
+                        <span class="block text-comp-accent mb-1 uppercase tracking-widest">Transmission Successful</span>
+                        Thank you for your message. We will be in touch shortly.
+                    </div>
+                    <div id="errorMessage" class="hidden mt-6 p-4 bg-red-100/50 border-2 border-red-800 text-red-900 text-sm font-bold text-center">
+                        Transmission Failed. Please try again.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-comp-ink text-comp-paper py-16 border-t-8 border-double border-comp-paper">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <!-- Inverted logo for footer -->
+                <img src="MB Logo.PNG" alt="Martin Brothers LTD" class="h-16 w-auto object-contain mb-4 filter invert opacity-90 mx-auto md:mx-0 sepia-[.2]">
+                <span class="text-comp-paper/60 text-sm font-sans tracking-widest uppercase">Product Engineering Services</span>
+            </div>
+            
+            <div class="text-comp-paper/40 text-xs font-sans uppercase tracking-widest">
+                &copy; 2025 Martin Brothers LTD.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        function toggleMenu() {
+            menu.classList.toggle('hidden');
+        }
+
+        btn.addEventListener('click', toggleMenu);
+
+        // Simple Form Handler (Prevents refresh and shows success)
+        const form = document.getElementById('contactForm');
+        const successMsg = document.getElementById('successMessage');
+        const errorMsg = document.getElementById('errorMessage');
+        const submitBtn = form.querySelector('button');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Loading state
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = 'TRANSMITTING...';
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-75');
+            successMsg.classList.add('hidden');
+            errorMsg.classList.add('hidden');
+
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: new FormData(form),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    form.reset();
+                    successMsg.classList.remove('hidden');
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        successMsg.classList.add('hidden');
+                    }, 5000);
+                } else {
+                    errorMsg.classList.remove('hidden');
+                }
+            } catch (error) {
+                errorMsg.classList.remove('hidden');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-75');
+            }
+        });
+        
+        // Navbar transparency on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-comp-paper');
+                navbar.classList.add('shadow-md');
+            } else {
+                navbar.classList.remove('bg-comp-paper');
+                navbar.classList.remove('shadow-md');
+                navbar.classList.add('bg-comp-paper/95');
+            }
+        });
+    </script>
+</body>
+</html>
